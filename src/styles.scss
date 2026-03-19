@@ -476,6 +476,25 @@ body.light-mode .prompt-card {
   height: 36px;
   padding: 0;
   font-size: var(--font-size-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-update {
+  &:hover {
+    color: var(--neon-cyan);
+    border-color: var(--neon-cyan);
+    box-shadow: var(--glow-cyan);
+  }
+}
+
+.btn-delete {
+  &:hover {
+    color: var(--neon-danger);
+    border-color: var(--neon-danger);
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+  }
 }
 
 .prompt-list {

@@ -1,8 +1,7 @@
-import { Component, inject } from '@angular/core'
-import { PromptCard } from "../prompt-card/prompt-card";
-import { PromptService } from '../prompt-service';
-import {toSignal} from '@angular/core/rxjs-interop'
-
+import { Component, inject, signal } from '@angular/core'
+import { PromptCard } from '../prompt-card/prompt-card'
+import { PromptService } from '../prompt-service'
+import { Prompt } from '../prompt.models'
 
 @Component({
   selector: 'app-prompt-list',
@@ -11,10 +10,28 @@ import {toSignal} from '@angular/core/rxjs-interop'
   styleUrl: './prompt-list.scss',
 })
 export class PromptList {
+  private promptService = inject(PromptService)
 
+  prompts = signal<Prompt[]>([])
 
-  promptService = inject(PromptService)
+  constructor() {
+    this.loadPrompts()
+  }
 
-  prompts = toSignal(this.promptService.getPrompts(), {initialValue: []})
+  loadPrompts() {
+    this.promptService.getPrompts().subscribe({
+      next: (data) => this.prompts.set(data),
+      error: (err) => console.error('Erreur chargement prompts:', err),
+    })
+  }
 
+  onDeletePrompt(id: number) {
+    this.prompts.update((prompts: Prompt[]) => prompts.filter((p: Prompt) => p.id !== id))
+  }
+
+  onUpdatePrompt(updatedPrompt: Prompt) {
+    this.prompts.update((prompts: Prompt[]) =>
+      prompts.map((p: Prompt) => (p.id === updatedPrompt.id ? updatedPrompt : p)),
+    )
+  }
 }

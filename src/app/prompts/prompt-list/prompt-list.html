@@ -5,7 +5,11 @@
 } @else {
   <div class="prompt-list">
     @for (prompt of prompts(); track prompt.id) {
-      <app-prompt-card [prompt]="prompt"></app-prompt-card>
+      <app-prompt-card
+        [prompt]="prompt"
+        (deleted)="onDeletePrompt($event)"
+        (updated)="onUpdatePrompt($event)"
+      ></app-prompt-card>
     }
   </div>
 }
