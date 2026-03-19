@@ -1,1 +1,59 @@
-<p>prompt-form works!</p>
+<div class="form-container">
+  <h2 class="form-title">Créer un Prompt</h2>
+
+  <form class="prompt-form" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="title">Titre</label>
+      <input
+        id="title"
+        type="text"
+        name="title"
+        formControlName="title"
+        placeholder="Entrez le titre de votre prompt..."
+        required
+      />
+    </div>
+
+    <div class="field">
+      <label for="content">Contenu</label>
+      <textarea
+        name="content"
+        id="content"
+        formControlName="content"
+        placeholder="Décrivez votre prompt en détail..."
+        rows="8"
+        required
+      ></textarea>
+    </div>
+
+    <div class="field">
+      <label for="category">Catégorie</label>
+      <select name="category" id="category" formControlName="categoryId" required>
+        <option value="" disabled>Sélectionnez une catégorie</option>
+        @for (category of categories(); track category.id) {
+          <option [value]="category.id">{{ category.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn-submit">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+        <span>Créer</span>
+      </button>
+    </div>
+  </form>
+</div>

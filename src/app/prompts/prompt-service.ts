@@ -13,10 +13,18 @@ export class PromptService {
 
   baseUrl = environment.apiUrl + 'prompts'
 
-
-
   getPrompts(){
     return this.httpClient.get<Prompt[]>(this.baseUrl)
   }
+
+     createPrompt(prompt : {
+        title : string,
+        content : string,
+        categoryId: number
+    }){
+
+      return this.httpClient.post<Prompt>(this.baseUrl,prompt)
+
+    }
 
 }
