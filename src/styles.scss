@@ -17,6 +17,7 @@
   --neon-purple: #8b5cf6;
   --neon-green: #00ff88;
   --neon-orange: #ff6b00;
+  --neon-danger: #ef4444;
 
   --border-glow: rgba(0, 245, 255, 0.3);
   --border-glow-magenta: rgba(255, 0, 255, 0.3);
@@ -63,14 +64,14 @@
 }
 
 body.light-mode {
-  --bg-primary: #f0f2f5;
-  --bg-secondary: #e4e7eb;
+  --bg-primary: #f8fafc;
+  --bg-secondary: #e2e8f0;
   --bg-card: #ffffff;
-  --bg-card-hover: #f8fafc;
+  --bg-card-hover: #f1f5f9;
 
-  --text-primary: #1e293b;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
 
   --neon-cyan: #0891b2;
   --neon-cyan-dim: #0e7490;
@@ -79,17 +80,18 @@ body.light-mode {
   --neon-purple: #7c3aed;
   --neon-green: #059669;
   --neon-orange: #ea580c;
+  --neon-danger: #dc2626;
 
-  --border-glow: rgba(8, 145, 178, 0.2);
-  --border-glow-magenta: rgba(192, 38, 211, 0.2);
+  --border-glow: rgba(8, 145, 178, 0.3);
+  --border-glow-magenta: rgba(192, 38, 211, 0.3);
 
-  --gradient-card: linear-gradient(180deg, rgba(8, 145, 178, 0.05) 0%, transparent 100%);
+  --gradient-card: linear-gradient(180deg, rgba(8, 145, 178, 0.08) 0%, transparent 100%);
 
-  --glow-cyan: 0 0 15px rgba(8, 145, 178, 0.4), 0 0 30px rgba(8, 145, 178, 0.15);
-  --glow-magenta: 0 0 15px rgba(192, 38, 211, 0.4), 0 0 30px rgba(192, 38, 211, 0.15);
-  --glow-text: 0 0 8px var(--neon-cyan), 0 0 15px var(--neon-cyan);
+  --glow-cyan: 0 0 20px rgba(8, 145, 178, 0.5), 0 0 40px rgba(8, 145, 178, 0.2);
+  --glow-magenta: 0 0 20px rgba(192, 38, 211, 0.5), 0 0 40px rgba(192, 38, 211, 0.2);
+  --glow-text: 0 0 10px var(--neon-cyan), 0 0 20px var(--neon-cyan);
 
-  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
 *,
@@ -135,9 +137,9 @@ body {
 body.light-mode {
   &::before {
     background:
-      radial-gradient(ellipse at 20% 20%, rgba(8, 145, 178, 0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 80%, rgba(124, 58, 237, 0.06) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 50%, rgba(192, 38, 211, 0.02) 0%, transparent 70%);
+      radial-gradient(ellipse at 20% 20%, rgba(8, 145, 178, 0.1) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, rgba(192, 38, 211, 0.05) 0%, transparent 70%);
   }
 }
 
@@ -256,6 +258,15 @@ h1 {
     &::before {
       opacity: 1;
     }
+  }
+}
+
+body.light-mode .prompt-card {
+  border-color: rgba(8, 145, 178, 0.25);
+  box-shadow: var(--shadow-card);
+
+  &:hover {
+    box-shadow: var(--glow-cyan), var(--shadow-card);
   }
 }
 

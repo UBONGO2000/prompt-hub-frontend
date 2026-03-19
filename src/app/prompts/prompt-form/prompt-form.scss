@@ -35,6 +35,11 @@
   }
 }
 
+body.light-mode .form-container {
+  border-color: rgba(8, 145, 178, 0.25);
+  box-shadow: var(--shadow-card);
+}
+
 .form-title {
   font-family: var(--font-display);
   font-size: var(--font-size-2xl);
@@ -75,8 +80,8 @@
   select {
     width: 100%;
     padding: var(--space-md);
-    background: rgba(0, 0, 0, 0.4);
-    border: 1px solid rgba(0, 245, 255, 0.15);
+    background: rgba(15, 23, 42, 0.08);
+    border: 1px solid rgba(8, 145, 178, 0.25);
     border-radius: var(--radius-md);
     color: var(--text-primary);
     font-family: var(--font-body);
@@ -90,11 +95,25 @@
     &:focus {
       outline: none;
       border-color: var(--neon-cyan);
-      box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);
+      box-shadow: 0 0 15px rgba(8, 145, 178, 0.25);
+      background: rgba(15, 23, 42, 0.12);
     }
 
     &:focus::placeholder {
       color: transparent;
+    }
+  }
+
+  body.light-mode & {
+    input,
+    textarea,
+    select {
+      background: rgba(255, 255, 255, 0.8);
+      border-color: rgba(8, 145, 178, 0.3);
+
+      &:focus {
+        background: #ffffff;
+      }
     }
   }
 
@@ -117,6 +136,44 @@
       color: var(--text-primary);
       padding: var(--space-sm);
     }
+  }
+
+  input.error,
+  textarea.error,
+  select.error {
+    border-color: var(--neon-danger, #ef4444);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+
+    &:focus {
+      border-color: var(--neon-danger, #ef4444);
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+    }
+  }
+
+  input.valid,
+  textarea.valid,
+  select.valid {
+    border-color: var(--neon-green, #10b981);
+
+    &:focus {
+      border-color: var(--neon-green, #10b981);
+      box-shadow: 0 0 15px rgba(16, 185, 129, 0.3);
+    }
+  }
+}
+
+.error-message {
+  margin-top: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid var(--neon-danger, #ef4444);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+
+  span {
+    display: block;
+    font-size: var(--font-size-sm);
+    color: var(--neon-danger, #ef4444);
+    line-height: 1.5;
   }
 }
 

@@ -7,11 +7,21 @@
       <input
         id="title"
         type="text"
-        name="title"
         formControlName="title"
         placeholder="Entrez le titre de votre prompt..."
-        required
+        [class.error]="title?.invalid && title?.touched"
+        [class.valid]="title?.valid && title?.touched"
       />
+      @if (title?.invalid && title?.touched) {
+        <div class="error-message">
+          @if (title?.hasError('required')) {
+            <span>• Le titre est requis</span>
+          }
+          @if (title?.hasError('maxlength')) {
+            <span>• Le titre ne doit pas dépasser 50 caractères</span>
+          }
+        </div>
+      }
     </div>
 
     <div class="field">
@@ -22,22 +32,49 @@
         formControlName="content"
         placeholder="Décrivez votre prompt en détail..."
         rows="8"
-        required
+        [class.error]="content?.invalid && content?.touched"
+        [class.valid]="content?.valid && content?.touched"
       ></textarea>
+      @if (content?.invalid && content?.touched) {
+        <div class="error-message">
+          @if (content?.hasError('required')) {
+            <span>• Le contenu est requis</span>
+          }
+          @if (content?.hasError('minlength')) {
+            <span>• Le contenu doit contenir au moins 10 caractères</span>
+          }
+          @if (content?.hasError('maxlength')) {
+            <span>• Le contenu ne doit pas dépasser 5000 caractères</span>
+          }
+        </div>
+      }
     </div>
 
     <div class="field">
       <label for="category">Catégorie</label>
-      <select name="category" id="category" formControlName="categoryId" required>
-        <option value="" disabled>Sélectionnez une catégorie</option>
+      <select
+        name="category"
+        id="category"
+        formControlName="categoryId"
+        [class.error]="categoryId?.invalid && categoryId?.touched"
+        [class.valid]="categoryId?.valid && categoryId?.touched"
+      >
+        <option [value]="0" disabled>Sélectionnez une catégorie</option>
         @for (category of categories(); track category.id) {
           <option [value]="category.id">{{ category.name }}</option>
         }
       </select>
+      @if (categoryId?.invalid && categoryId?.touched) {
+        <div class="error-message">
+          @if (categoryId?.hasError('required') || categoryId?.hasError('min')) {
+            <span>• Veuillez sélectionner une catégorie</span>
+          }
+        </div>
+      }
     </div>
 
     <div class="form-actions">
-      <button type="submit" class="btn-submit">
+      <button type="submit" class="btn-submit" [disabled]="form.pending">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="18"

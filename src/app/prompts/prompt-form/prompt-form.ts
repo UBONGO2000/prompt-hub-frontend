@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms'
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { CategoryService } from '../category-service'
 import { PromptService } from '../prompt-service'
 import { Router } from '@angular/router'
@@ -18,18 +18,29 @@ export class PromptForm {
   categories = toSignal(this.categoryService.getCategories())
 
   form = new FormGroup({
-    title: new FormControl('', { nonNullable: true }),
-    content: new FormControl('', { nonNullable: true }),
-    categoryId: new FormControl<number>(0, { nonNullable: true }),
+    title: new FormControl('', {
+      validators: [Validators.required, Validators.maxLength(50)],
+      nonNullable: true,
+    }),
+    content: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(10), Validators.maxLength(5000)],
+      nonNullable: true,
+    }),
+    categoryId: new FormControl(0, {
+      validators: [Validators.required, Validators.min(1)],
+      nonNullable: true,
+    }),
   })
 
   submit() {
-    const formValue = this.form.getRawValue()
+    this.form.markAllAsTouched()
 
-    if (!formValue.title || !formValue.content || !formValue.categoryId) {
-      console.error('Formulaire incomplet')
+    if (this.form.invalid) {
+      console.error('Formulaire invalide')
       return
     }
+
+    const formValue = this.form.getRawValue()
 
     const prompt = {
       title: formValue.title,
@@ -37,16 +48,25 @@ export class PromptForm {
       categoryId: Number(formValue.categoryId),
     }
 
-    console.log('Envoi du prompt:', prompt)
-
     this.promptService.createPrompt(prompt).subscribe({
-      next: (response) => {
-        console.log('Prompt créé:', response)
+      next: () => {
         this.router.navigate(['/'])
       },
       error: (error) => {
         console.error('Erreur lors de la création:', error)
       },
     })
+  }
+
+  get title() {
+    return this.form.get('title')
+  }
+
+  get content() {
+    return this.form.get('content')
+  }
+
+  get categoryId() {
+    return this.form.get('categoryId')
   }
 }
