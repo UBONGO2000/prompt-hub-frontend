@@ -1,0 +1,23 @@
+<div class="prompt-card">
+  <div class="prompt-header">
+    <div>
+      <h3 class="prompt-title">{{ prompt().title }}</h3>
+      <p class="prompt-author">par {{ prompt().author.username }}</p>
+    </div>
+    <div class="prompt-actions">
+      <button class="btn btn-icon" title="Modifier">✎</button>
+      <button class="btn btn-icon" (click)="copyToClipboard()" title="Copier">📋</button>
+    </div>
+  </div>
+
+  <textarea class="prompt-content" readonly rows="8">{{ prompt().content }}</textarea>
+
+  <div class="prompt-footer">
+    <span class="category-badge">{{ prompt().category.name }}</span>
+    <div class="vote-container">
+      <button class="vote-btn vote-up" title="Upvote">▲</button>
+      <span class="vote-score">{{ prompt().score }}</span>
+      <button class="vote-btn vote-down" title="Downvote">▼</button>
+    </div>
+  </div>
+</div>

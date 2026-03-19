@@ -1,0 +1,11 @@
+@if (prompts.length === 0) {
+  <div class="empty-state">
+    <p>Aucun prompt disponible</p>
+  </div>
+} @else {
+  <div class="prompt-list">
+    @for (prompt of prompts; track prompt.id) {
+      <app-prompt-card [prompt]="prompt"></app-prompt-card>
+    }
+  </div>
+}
