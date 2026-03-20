@@ -1,31 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { provideHttpClient } from '@angular/common/http'
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing'
-import { PromptList } from './prompt-list'
+import { AuthForm } from './auth-form'
 
-describe('PromptList', () => {
-  let component: PromptList
-  let fixture: ComponentFixture<PromptList>
-  let httpMock: HttpTestingController
+describe('AuthForm', () => {
+  let component: AuthForm
+  let fixture: ComponentFixture<AuthForm>
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PromptList],
+      imports: [AuthForm],
       providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents()
 
-    httpMock = TestBed.inject(HttpTestingController)
-    fixture = TestBed.createComponent(PromptList)
+    fixture = TestBed.createComponent(AuthForm)
     component = fixture.componentInstance
-
-    const req = httpMock.expectOne('http://localhost:3000/prompts')
-    req.flush([])
-
     await fixture.whenStable()
-  })
-
-  afterEach(() => {
-    httpMock.verify()
   })
 
   it('should create', () => {

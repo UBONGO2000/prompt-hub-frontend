@@ -163,28 +163,47 @@
   font-size: var(--font-size-sm);
   transition: all var(--transition-normal);
 
-  &:hover {
+  &:hover:not(:disabled) {
     color: var(--neon-cyan);
     border-color: var(--neon-cyan);
     box-shadow: var(--glow-cyan);
     transform: scale(1.1);
   }
 
-  &:active {
+  &:active:not(:disabled) {
     transform: scale(0.95);
     box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
   }
 
-  &.vote-up:hover {
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  &.vote-up:hover:not(:disabled) {
     color: var(--neon-green);
     border-color: var(--neon-green);
     box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
   }
 
-  &.vote-down:hover {
+  &.vote-down:hover:not(:disabled) {
     color: var(--neon-orange);
     border-color: var(--neon-orange);
     box-shadow: 0 0 20px rgba(255, 107, 0, 0.4);
+  }
+
+  &.vote-up.voted {
+    color: var(--neon-green);
+    border-color: var(--neon-green);
+    background: rgba(0, 255, 136, 0.15);
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+  }
+
+  &.vote-down.voted {
+    color: var(--neon-orange);
+    border-color: var(--neon-orange);
+    background: rgba(255, 107, 0, 0.15);
+    box-shadow: 0 0 10px rgba(255, 107, 0, 0.3);
   }
 }
 

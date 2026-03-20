@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CategoryService } from '../category-service'
 import { PromptService } from '../prompt-service'
 import { Router } from '@angular/router'
+import { ToastService } from '../../shared/toast.service'
 
 @Component({
   selector: 'app-prompt-form',
@@ -15,6 +16,8 @@ export class PromptForm {
   private router = inject(Router)
   private promptService = inject(PromptService)
   private categoryService = inject(CategoryService)
+  private toastService = inject(ToastService)
+
   categories = toSignal(this.categoryService.getCategories())
 
   form = new FormGroup({
@@ -36,7 +39,7 @@ export class PromptForm {
     this.form.markAllAsTouched()
 
     if (this.form.invalid) {
-      console.error('Formulaire invalide')
+      this.toastService.error('Veuillez corriger les erreurs du formulaire')
       return
     }
 
@@ -50,10 +53,12 @@ export class PromptForm {
 
     this.promptService.createPrompt(prompt).subscribe({
       next: () => {
+        this.toastService.success('Prompt créé avec succès !')
         this.router.navigate(['/'])
       },
       error: (error) => {
-        console.error('Erreur lors de la création:', error)
+        const msg = error.status === 403 ? 'Vous devez être connecté pour créer un prompt' : 'Erreur lors de la création'
+        this.toastService.error(msg)
       },
     })
   }

@@ -1,4 +1,9 @@
-@if (prompts().length === 0) {
+@if (isLoading()) {
+  <div class="loading-state">
+    <div class="loading-spinner"></div>
+    <p>Chargement des prompts...</p>
+  </div>
+} @else if (prompts().length === 0) {
   <div class="empty-state">
     <p>Aucun prompt disponible</p>
   </div>

@@ -2,6 +2,8 @@ import { Component, input, output, inject, signal } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { Prompt } from '../prompt.models'
 import { PromptService } from '../prompt-service'
+import { AuthService } from '../../auth/auth.service'
+import { ToastService } from '../../shared/toast.service'
 
 @Component({
   selector: 'app-prompt-card',
@@ -16,14 +18,27 @@ export class PromptCard {
   updated = output<Prompt>()
 
   private promptService = inject(PromptService)
+  private authService = inject(AuthService)
+  private toastService = inject(ToastService)
 
   isEditing = signal(false)
   editTitle = ''
   editContent = ''
   isLoading = signal(false)
 
+  get isOwner(): boolean {
+    const currentUser = this.authService.currentUser()
+    const prompt = this.prompt()
+    return currentUser !== null && currentUser.id === prompt.author.id
+  }
+
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn()
+  }
+
   copyToClipboard() {
     void navigator.clipboard.writeText(this.prompt().content)
+    this.toastService.success('Prompt copié dans le presse-papier')
   }
 
   onDelete() {
@@ -33,10 +48,12 @@ export class PromptCard {
       this.promptService.deletePrompt(id).subscribe({
         next: () => {
           this.deleted.emit(id)
+          this.toastService.success('Prompt supprimé avec succès')
           this.isLoading.set(false)
         },
         error: (err) => {
-          console.error('Erreur lors de la suppression:', err)
+          const msg = err.status === 403 ? 'Vous ne pouvez pas supprimer ce prompt' : 'Erreur lors de la suppression'
+          this.toastService.error(msg)
           this.isLoading.set(false)
         },
       })
@@ -60,7 +77,7 @@ export class PromptCard {
     const p = this.prompt()
 
     if (!this.editTitle.trim() || !this.editContent.trim()) {
-      alert('Le titre et le contenu sont requis')
+      this.toastService.error('Le titre et le contenu sont requis')
       return
     }
 
@@ -75,12 +92,30 @@ export class PromptCard {
         next: (updated) => {
           this.updated.emit(updated)
           this.isEditing.set(false)
+          this.toastService.success('Prompt mis à jour avec succès')
           this.isLoading.set(false)
         },
         error: (err) => {
-          console.error('Erreur lors de la mise à jour:', err)
+          const msg = err.status === 403 ? 'Vous ne pouvez pas modifier ce prompt' : 'Erreur lors de la mise à jour'
+          this.toastService.error(msg)
           this.isLoading.set(false)
         },
       })
+  }
+
+  onUpvote() {
+    if (!this.isLoggedIn) return
+    this.promptService.upvote(this.prompt().id).subscribe({
+      next: (updated) => this.updated.emit(updated),
+      error: () => this.toastService.error('Erreur lors du vote'),
+    })
+  }
+
+  onDownvote() {
+    if (!this.isLoggedIn) return
+    this.promptService.downvote(this.prompt().id).subscribe({
+      next: (updated) => this.updated.emit(updated),
+      error: () => this.toastService.error('Erreur lors du vote'),
+    })
   }
 }

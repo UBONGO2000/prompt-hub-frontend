@@ -1,0 +1,82 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <h2 class="auth-title">
+      @if (isLoginMode()) {
+        Connexion
+      } @else {
+        Inscription
+      }
+    </h2>
+
+    @if (errorMessage()) {
+      <div class="auth-error">{{ errorMessage() }}</div>
+    }
+
+    <form class="auth-form" [formGroup]="form" (ngSubmit)="submit()">
+      <div class="field">
+        <label for="username">Nom d'utilisateur</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="Votre pseudo..."
+          [class.error]="username?.invalid && username?.touched"
+          [class.valid]="username?.valid && username?.touched"
+        />
+        @if (username?.invalid && username?.touched) {
+          <div class="error-message">
+            @if (username?.hasError('required')) {
+              <span>Le nom d'utilisateur est requis</span>
+            }
+            @if (username?.hasError('minlength')) {
+              <span>Minimum 3 caractères</span>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Mot de passe</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Votre mot de passe..."
+          [class.error]="password?.invalid && password?.touched"
+          [class.valid]="password?.valid && password?.touched"
+        />
+        @if (password?.invalid && password?.touched) {
+          <div class="error-message">
+            @if (password?.hasError('required')) {
+              <span>Le mot de passe est requis</span>
+            }
+            @if (password?.hasError('minlength')) {
+              <span>Minimum 4 caractères</span>
+            }
+          </div>
+        }
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="isLoading()">
+        @if (isLoading()) {
+          <span class="spinner"></span>
+        }
+        @if (isLoginMode()) {
+          Se connecter
+        } @else {
+          Créer un compte
+        }
+      </button>
+    </form>
+
+    <div class="auth-toggle">
+      @if (isLoginMode()) {
+        <span>Pas encore de compte ?</span>
+        <button type="button" class="btn-link" (click)="toggleMode()">S'inscrire</button>
+      } @else {
+        <span>Déjà un compte ?</span>
+        <button type="button" class="btn-link" (click)="toggleMode()">Se connecter</button>
+      }
+    </div>
+  </div>
+</div>

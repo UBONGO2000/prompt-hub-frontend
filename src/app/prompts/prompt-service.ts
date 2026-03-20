@@ -33,4 +33,12 @@ export class PromptService {
   deletePrompt(id: number) {
     return this.httpClient.delete<void>(`${this.baseUrl}/${id}`)
   }
+
+  upvote(id: number) {
+    return this.httpClient.post<Prompt>(`${this.baseUrl}/${id}/upvote`, {})
+  }
+
+  downvote(id: number) {
+    return this.httpClient.post<Prompt>(`${this.baseUrl}/${id}/downvote`, {})
+  }
 }
