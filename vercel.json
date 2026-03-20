@@ -1,6 +1,6 @@
 {
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/prompt-hub-frontend",
+  "outputDirectory": "dist/prompt-hub-frontend/browser",
   "installCommand": "npm install",
   "routes": [
     {
