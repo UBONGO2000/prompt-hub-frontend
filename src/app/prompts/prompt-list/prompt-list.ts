@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core'
 import { PromptCard } from '../prompt-card/prompt-card'
 import { PromptService } from '../prompt-service'
 import { Prompt } from '../prompt.models'
@@ -9,6 +9,7 @@ import { ToastService } from '../../shared/toast.service'
   imports: [PromptCard],
   templateUrl: './prompt-list.html',
   styleUrl: './prompt-list.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PromptList {
   private promptService = inject(PromptService)

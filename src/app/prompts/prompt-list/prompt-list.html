@@ -10,11 +10,25 @@
 } @else {
   <div class="prompt-list">
     @for (prompt of prompts(); track prompt.id) {
-      <app-prompt-card
-        [prompt]="prompt"
-        (deleted)="onDeletePrompt($event)"
-        (updated)="onUpdatePrompt($event)"
-      ></app-prompt-card>
+      @defer (on viewport) {
+        <app-prompt-card
+          [prompt]="prompt"
+          (deleted)="onDeletePrompt($event)"
+          (updated)="onUpdatePrompt($event)"
+        ></app-prompt-card>
+      } @placeholder {
+        <div class="prompt-card-skeleton">
+          <div class="skeleton-header">
+            <div class="skeleton-title"></div>
+            <div class="skeleton-author"></div>
+          </div>
+          <div class="skeleton-content"></div>
+          <div class="skeleton-footer">
+            <div class="skeleton-badge"></div>
+            <div class="skeleton-votes"></div>
+          </div>
+        </div>
+      }
     }
   </div>
 }

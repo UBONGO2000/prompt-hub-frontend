@@ -1,39 +1,45 @@
 @if (isEditing()) {
-  <div class="prompt-card edit-mode">
-    <div class="prompt-header">
+  @defer (on immediate) {
+    <div class="prompt-card edit-mode">
+      <div class="prompt-header">
+        <div class="field">
+          <label for="edit-title">Titre</label>
+          <input
+            id="edit-title"
+            type="text"
+            [(ngModel)]="editTitle"
+            placeholder="Titre du prompt..."
+          />
+        </div>
+      </div>
+
       <div class="field">
-        <label for="edit-title">Titre</label>
-        <input
-          id="edit-title"
-          type="text"
-          [(ngModel)]="editTitle"
-          placeholder="Titre du prompt..."
-        />
+        <label for="edit-content">Contenu</label>
+        <textarea
+          id="edit-content"
+          [(ngModel)]="editContent"
+          placeholder="Contenu du prompt..."
+          rows="8"
+        ></textarea>
+      </div>
+
+      <div class="edit-actions">
+        <button class="btn btn-cancel" (click)="cancelEdit()" [disabled]="isLoading()">
+          Annuler
+        </button>
+        <button class="btn btn-save" (click)="saveEdit()" [disabled]="isLoading()">
+          @if (isLoading()) {
+            <span class="spinner"></span>
+          }
+          Sauvegarder
+        </button>
       </div>
     </div>
-
-    <div class="field">
-      <label for="edit-content">Contenu</label>
-      <textarea
-        id="edit-content"
-        [(ngModel)]="editContent"
-        placeholder="Contenu du prompt..."
-        rows="8"
-      ></textarea>
+  } @placeholder {
+    <div class="prompt-card edit-mode">
+      <div class="skeleton-edit-loading">Chargement de l'éditeur...</div>
     </div>
-
-    <div class="edit-actions">
-      <button class="btn btn-cancel" (click)="cancelEdit()" [disabled]="isLoading()">
-        Annuler
-      </button>
-      <button class="btn btn-save" (click)="saveEdit()" [disabled]="isLoading()">
-        @if (isLoading()) {
-          <span class="spinner"></span>
-        }
-        Sauvegarder
-      </button>
-    </div>
-  </div>
+  }
 } @else {
   <div class="prompt-card">
     <div class="prompt-header">
@@ -42,7 +48,7 @@
         <p class="prompt-author">par {{ prompt().author.username }}</p>
       </div>
       <div class="prompt-actions">
-        @if (isOwner) {
+        @if (isOwner()) {
           <button class="btn btn-icon btn-update" (click)="startEdit()" title="Modifier">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +112,7 @@
           class="vote-btn vote-up"
           [class.voted]="prompt().userVote === 'up'"
           (click)="onUpvote()"
-          [disabled]="!isLoggedIn"
+          [disabled]="!isLoggedIn()"
           title="Upvote"
         >
           <svg
@@ -128,7 +134,7 @@
           class="vote-btn vote-down"
           [class.voted]="prompt().userVote === 'down'"
           (click)="onDownvote()"
-          [disabled]="!isLoggedIn"
+          [disabled]="!isLoggedIn()"
           title="Downvote"
         >
           <svg

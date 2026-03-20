@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Router } from '@angular/router'
 import { AuthService } from '../auth.service'
@@ -9,6 +9,7 @@ import { ToastService } from '../../shared/toast.service'
   imports: [ReactiveFormsModule],
   templateUrl: './auth-form.html',
   styleUrl: './auth-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthForm {
   private authService = inject(AuthService)

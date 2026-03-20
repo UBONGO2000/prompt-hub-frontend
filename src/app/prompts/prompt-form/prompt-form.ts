@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { CategoryService } from '../category-service'
@@ -11,6 +11,7 @@ import { ToastService } from '../../shared/toast.service'
   imports: [ReactiveFormsModule],
   templateUrl: './prompt-form.html',
   styleUrl: './prompt-form.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PromptForm {
   private router = inject(Router)

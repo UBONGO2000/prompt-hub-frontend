@@ -1,7 +1,4 @@
 import { Routes } from '@angular/router'
-import { PromptList } from './prompts/prompt-list/prompt-list'
-import { PromptForm } from './prompts/prompt-form/prompt-form'
-import { AuthForm } from './auth/auth-form/auth-form'
 import { authGuard } from './auth/auth.guard'
 
 export const routes: Routes = [
@@ -12,16 +9,18 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
-    component: AuthForm,
+    loadComponent: () => import('./auth/auth-form/auth-form').then((m) => m.AuthForm),
   },
   {
     path: 'prompts',
-    component: PromptList,
+    loadComponent: () =>
+      import('./prompts/prompt-list/prompt-list').then((m) => m.PromptList),
   },
   {
     path: 'prompts/create',
-    component: PromptForm,
     canActivate: [authGuard],
+    loadComponent: () =>
+      import('./prompts/prompt-form/prompt-form').then((m) => m.PromptForm),
   },
   {
     path: '**',

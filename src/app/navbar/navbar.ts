@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core'
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core'
 import { ThemeService } from '../theme.service'
 import { AuthService } from '../auth/auth.service'
 import { RouterLink } from '@angular/router'
@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router'
   imports: [RouterLink],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Navbar {
   private themeService = inject(ThemeService)

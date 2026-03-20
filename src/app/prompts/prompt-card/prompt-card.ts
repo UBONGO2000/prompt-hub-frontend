@@ -1,4 +1,4 @@
-import { Component, input, output, inject, signal } from '@angular/core'
+import { ChangeDetectionStrategy, Component, input, output, inject, signal, computed } from '@angular/core'
 import { FormsModule } from '@angular/forms'
 import { Prompt } from '../prompt.models'
 import { PromptService } from '../prompt-service'
@@ -10,6 +10,7 @@ import { ToastService } from '../../shared/toast.service'
   imports: [FormsModule],
   templateUrl: './prompt-card.html',
   styleUrl: './prompt-card.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PromptCard {
   prompt = input.required<Prompt>()
@@ -26,15 +27,12 @@ export class PromptCard {
   editContent = ''
   isLoading = signal(false)
 
-  get isOwner(): boolean {
-    const currentUser = this.authService.currentUser()
-    const prompt = this.prompt()
-    return currentUser !== null && currentUser.id === prompt.author.id
-  }
+  isOwner = computed(() => {
+    const user = this.authService.currentUser()
+    return user !== null && user.id === this.prompt().author.id
+  })
 
-  get isLoggedIn(): boolean {
-    return this.authService.isLoggedIn()
-  }
+  isLoggedIn = computed(() => this.authService.isLoggedIn())
 
   copyToClipboard() {
     void navigator.clipboard.writeText(this.prompt().content)
@@ -104,7 +102,7 @@ export class PromptCard {
   }
 
   onUpvote() {
-    if (!this.isLoggedIn) return
+    if (!this.isLoggedIn()) return
     this.promptService.upvote(this.prompt().id).subscribe({
       next: (updated) => this.updated.emit(updated),
       error: () => this.toastService.error('Erreur lors du vote'),
@@ -112,7 +110,7 @@ export class PromptCard {
   }
 
   onDownvote() {
-    if (!this.isLoggedIn) return
+    if (!this.isLoggedIn()) return
     this.promptService.downvote(this.prompt().id).subscribe({
       next: (updated) => this.updated.emit(updated),
       error: () => this.toastService.error('Erreur lors du vote'),
