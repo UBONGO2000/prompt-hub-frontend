@@ -1,7 +1,5 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist/prompt-hub-frontend",
-  "installCommand": "npm install",
-  "framework": null,
-  "nodeVersion": "18"
+  "installCommand": "npm install"
 }
